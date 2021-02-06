@@ -1,13 +1,13 @@
-import { Pagination } from "antd";
-import PropTypes from "prop-types";
-import { memo } from "react";
+import { Pagination } from 'antd';
+import PropTypes from 'prop-types';
+import { memo } from 'react';
 
 const MyPagination = ({
   total,
   onChange,
   changeSizePage,
   current,
-  pageSize,
+  pageSize
 }) => {
   return (
     <div className="pagination-wrapper">
@@ -29,5 +29,5 @@ MyPagination.propTypes = {
   onChange: PropTypes.func,
   changeSizePage: PropTypes.func,
   current: PropTypes.number,
-  pageSize: PropTypes.number,
+  pageSize: PropTypes.number
 };

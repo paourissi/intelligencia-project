@@ -1,29 +1,26 @@
-import React, { memo } from "react";
-import PropTypes from "prop-types";
-import { Alert as AntAlert } from "antd";
+import React, { memo } from 'react';
+import PropTypes from 'prop-types';
+import { Alert as AntAlert } from 'antd';
 
-const Alert = ({ error, onClose }) => {
-  return (
-    <>
-      {error.isError && (
-        <div className="alert-wrapper">
-          <AntAlert
-            message="Error when fetching data"
-            description={error.description}
-            type="error"
-            closable
-            onClose={onClose}
-          />
-        </div>
-      )}
-      ;
-    </>
-  );
-};
+const Alert = ({ error, isError }) => (
+  <>
+    {isError && (
+      <div className="alert-wrapper">
+        <AntAlert
+          message={error.message}
+          description={error.stack}
+          type="error"
+          closable
+        />
+      </div>
+    )}
+    ;
+  </>
+);
 
 export default memo(Alert);
 
 Alert.propTypes = {
-  onClose: PropTypes.func,
-  error: PropTypes.object,
+  isError: PropTypes.bool,
+  error: PropTypes.object
 };

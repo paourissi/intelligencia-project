@@ -1,35 +1,43 @@
-import React, { useEffect } from "react";
-import { chart } from "highcharts";
-import PropTypes from "prop-types";
-import { map } from "lodash/fp";
+// @ts-nocheck
+import React, { useEffect, useState } from 'react';
+import { chart } from 'highcharts';
+import PropTypes from 'prop-types';
+import { isEmpty, map } from 'lodash/fp';
 
-const BarChart = ({ chartData }) => {
+const BarChart = ({ data }) => {
+  const [chartData, setChartData] = useState(data);
+
   useEffect(() => {
-    chart("container", {
+    // eslint-disable-next-line no-unused-expressions
+    isEmpty(data) ? '' : setChartData(data);
+  }, [data]);
+
+  useEffect(() => {
+    chart('container', {
       chart: {
-        type: "column",
-        inverted: false,
+        type: 'column',
+        inverted: false
       },
       title: {
-        text: "Records per Words per Page",
+        text: 'Records per Words per Page'
       },
       xAxis: {
         title: {
-          text: "Words",
+          text: 'Words'
         },
-        categories: map("[0]", chartData),
+        categories: map('[0]', chartData)
       },
       yAxis: {
         title: {
-          text: "Records",
-        },
+          text: 'Records'
+        }
       },
       series: [
         {
-          name: "Records",
-          data: map("[1]", chartData),
-        },
-      ],
+          name: 'Records',
+          data: map('[1]', chartData)
+        }
+      ]
     });
   }, [chartData]);
 
@@ -39,7 +47,7 @@ const BarChart = ({ chartData }) => {
 export default BarChart;
 
 BarChart.propTypes = {
-  chartData: PropTypes.arrayOf(
+  data: PropTypes.arrayOf(
     PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
-  ),
+  )
 };

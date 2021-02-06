@@ -1,33 +1,55 @@
-import { memo, useState } from "react";
-import { Table as AntTable } from "antd";
-import PropTypes from "prop-types";
-import Pagination from "./Pagination";
+import { memo, useEffect, useState } from 'react';
+import { Table as AntTable } from 'antd';
+import PropTypes from 'prop-types';
+import { isEmpty } from 'lodash';
+import Pagination from './Pagination';
 
-const Table = ({ data, pagination, fetchPage, changeSizePage, isLoading }) => {
+const Table = ({
+  data,
+  page,
+  pageSize,
+  totalElements,
+  fetchPage,
+  changeSizePage,
+  isLoading
+}) => {
+  const [tableData, setTableData] = useState(data);
+
+  useEffect(() => {
+    // eslint-disable-next-line no-unused-expressions
+    isEmpty(data) ? '' : setTableData(data);
+  }, [data]);
+
   return (
     <>
       <AntTable
-        rowSelection={{
-          type: "checkbox",
-        }}
         columns={[
           {
-            title: "Label",
-            dataIndex: "label",
-            key: "label",
-            render: (text) => <a>{text}</a>,
+            title: 'Label',
+            dataIndex: 'label',
+            key: 'label'
           },
+          {
+            title: 'Ontology_name',
+            dataIndex: 'ontology_name',
+            key: 'ontology_name'
+          },
+          {
+            title: 'OBO ID',
+            dataIndex: 'obo_id',
+            key: 'obo_id'
+          }
         ]}
-        dataSource={data}
+        dataSource={tableData}
         loading={isLoading}
         pagination={false}
         rowKey="label"
         scroll={{ y: 340 }}
       />
       <Pagination
-        pageSize={pagination.pageSize}
-        current={pagination.page}
-        total={pagination.totalElements}
+        pageSize={pageSize}
+        current={page}
+        total={totalElements}
         onChange={fetchPage}
         changeSizePage={changeSizePage}
       ></Pagination>
@@ -39,8 +61,10 @@ export default memo(Table);
 
 Table.propTypes = {
   data: PropTypes.array,
-  pagination: PropTypes.object,
+  totalElements: PropTypes.number,
+  pageSize: PropTypes.number,
+  page: PropTypes.number,
   fetchPage: PropTypes.func,
   changeSizePage: PropTypes.func,
-  isLoading: PropTypes.bool,
+  isLoading: PropTypes.bool
 };
